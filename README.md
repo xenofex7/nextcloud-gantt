@@ -25,11 +25,11 @@ Clicking on a bar opens a popup with the card description:
 
 <img width="650" alt="3b699ce4509895d77a01090fff37b3ddb5048234" src="https://github.com/user-attachments/assets/3204b594-c15d-439d-85d4-faa569520336" />
 
-You can eddit the description by clicking on the pencil or in the text:
+You can edit the description by clicking on the pencil or in the text:
 
 <img width="650"  alt="69c71d35a1e71d31115798e5bb534da08c6c9f7d" src="https://github.com/user-attachments/assets/4f0c0d46-89bc-42be-afd2-9402c613b999" />
 
-Every interaction is synchronized with Deck via the Deck API. Also changes in Deck lead to an update of the Gantt chart, so one can have both Apps open and use them simoultaneously, i.e. create a card in Deck and then move it to the right position in time in Gantt.
+Every interaction is synchronized with Deck via the Deck API. Also changes in Deck lead to an update of the Gantt chart, so one can have both Apps open and use them simultaneously, i.e. create a card in Deck and then move it to the right position in time in Gantt.
 
 ### Overview of the parameters that can be viewed or edited:
 
@@ -52,7 +52,7 @@ Every interaction is synchronized with Deck via the Deck API. Also changes in De
 ## Installation
 ### Outside Nextcloud
 
-The app can be used outside of Nextcloud: Just download everything and open index.html. You should use a Nextcloud App Password to connect to your Deck boards (in Nexcloud go to Settings -> Security -> scroll down to "Add App Password"). 
+The app can be used outside of Nextcloud: Just download everything and open index.html. You should use a Nextcloud App Password to connect to your Deck boards (in Nextcloud go to Settings -> Security -> scroll down to "Add App Password"). 
 
 ### Inside Nextcloud
 Connect to your Nextcloud installation. E.g. if it is in a Docker container
@@ -70,7 +70,7 @@ apt install git -y
 Install ncgantt app:
 ```
 # Clone the app from github
-git clone https://github.com/rolliracker/ncgantt.git /var/www/html/custom_apps/ncgantt
+git clone https://github.com/nextcloud-community/ncgantt.git /var/www/html/custom_apps/ncgantt
 
 # Activate the app 
 php occ app:enable ncgantt
@@ -83,7 +83,7 @@ After reloading Nextcloud in your browser you should see a Gantt icon in the app
 rm -r /var/www/html/custom_apps/ncgantt
 
 # Clone from github
-git clone https://github.com/rolliracker/ncgantt.git /var/www/html/custom_apps/ncgantt
+git clone https://github.com/nextcloud-community/ncgantt.git /var/www/html/custom_apps/ncgantt
 
 # Deactivate 
 php occ app:disable ncgantt
