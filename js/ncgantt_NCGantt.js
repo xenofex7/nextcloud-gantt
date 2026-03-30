@@ -334,7 +334,8 @@ class NCGantt {
                         'OCS-APIRequest': 'true',
                         'requesttoken': OC.requestToken,
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    credentials: 'include'
                 };
             } else {
                 const url = this.getElement('#url').value.trim();
@@ -497,7 +498,7 @@ class NCGantt {
         console.log("sendCardData...");
         try {
             const endpoint = `/boards/${boardId}/stacks/${stackId}/cards/${cardId}`;
-            const result = await this.makeApiCall(endpoint, 'PUT', card);
+            const cardPayload = {...card}; if (cardPayload.owner && typeof cardPayload.owner === "object") { cardPayload.owner = cardPayload.owner.uid; } const result = await this.makeApiCall(endpoint, "PUT", cardPayload);
             
             this.showSuccess('Updated card successfully');
             this.markPendingCardData();
@@ -505,7 +506,7 @@ class NCGantt {
             return result;
         } catch (error) {
             this.showError(error.message);
-            this.pendingCardUpdates[cardId] = card;
+            card.boardId = boardId; card.stackId = stackId; this.pendingCardUpdates[cardId] = card;
         }
     }
 
