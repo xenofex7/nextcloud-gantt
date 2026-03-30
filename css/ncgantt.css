@@ -3,6 +3,23 @@
  */
 
 .app-ncgantt {
+    /* Frappe Gantt overrides */
+    --g-weekend-highlight-color: #e8e8f0;
+
+    .gantt-container .tick {
+        stroke: #d0d0d0;
+        stroke-width: 0.5px;
+    }
+    .gantt-container .tick.thick {
+        stroke: #b0b0b0;
+        stroke-width: 1px;
+    }
+    .gantt-container .current-date-highlight {
+        border-radius: 3px;
+        margin: 0 !important;
+        width: var(--gv-column-width) !important;
+    }
+
     /* Main container */
     .gannt_container {
         max-width: 100%;

@@ -924,7 +924,8 @@ class NCGantt {
                         overdue: card.overdue || 0,
                         cardId: card.id,
                         stackId: stack.id,
-                        labels: card.labels || []
+                        labels: card.labels || [],
+                        assignedUsers: card.assignedUsers || []
                     });
                     
                     this.task2stackCardIndex.push({ stack: stackIndex, card: cardIndex });
@@ -956,8 +957,37 @@ class NCGantt {
                     bar_height: 22,
                     padding: 16,
                     scroll_to: 'start',
+                    infinite_padding: false,
                     popup_trigger: 'click',
-                    
+                    popup: (ctx) => {
+                        ctx.set_title(ctx.task.name);
+                        ctx.set_subtitle(ctx.task.description || '');
+
+                        const formatDate = (d) => {
+                            return d.toLocaleDateString('de-DE', {
+                                weekday: 'long',
+                                day: 'numeric',
+                                month: 'long'
+                            });
+                        };
+                        const start = ctx.task._start;
+                        const end = new Date(ctx.task._end.getTime() - 1000);
+                        const days = Math.round((ctx.task._end - ctx.task._start) / 86400000);
+                        const dayLabel = days === 1 ? 'Tag' : 'Tage';
+
+                        let details = `${formatDate(start)} - ${formatDate(end)} (${days} ${dayLabel})`;
+
+                        if (ctx.task.assignedUsers && ctx.task.assignedUsers.length > 0) {
+                            const names = ctx.task.assignedUsers
+                                .map(u => this.escapeHtml(u.participant.displayname))
+                                .join(', ');
+                            details = `Zust\u00e4ndig: ${names}<br>${details}`;
+                        }
+
+                        details += `<br>Fortschritt: ${ctx.task.progress}%`;
+                        ctx.set_details(details);
+                    },
+
                     on_date_change: async (task, start, end) => {
                         await this.handleDateChange(task, start, end, tasks);
                     },
@@ -1328,25 +1358,30 @@ class NCGantt {
             end = this.parseDate(card.duedate);
         }
         
-        const default_interval = 12; // hours
-        
-        // If we have end but no start, set start before
+        // Normalize date to midnight
+        const toMidnight = (d) => {
+            const m = new Date(d);
+            m.setHours(0, 0, 0, 0);
+            return m;
+        };
+
+        // If we have end but no start, set start to same day
         if (end && !start) {
-            start = new Date(end);
-            start.setHours(start.getHours() - default_interval);
+            start = toMidnight(end);
         }
-        
-        // If we have start but no end, set end after
+
+        // If we have start but no end, set end to next day
         if (start && !end) {
+            start = toMidnight(start);
             end = new Date(start);
-            end.setHours(end.getHours() + default_interval);
+            end.setDate(end.getDate() + 1);
         }
-        
+
         // Last resort: use today
         if (!start || !end) {
-            start = new Date();
-            end = new Date();
-            end.setHours(end.getHours() + default_interval);
+            start = toMidnight(new Date());
+            end = new Date(start);
+            end.setDate(end.getDate() + 1);
         }
         
         return { start, end, progress };

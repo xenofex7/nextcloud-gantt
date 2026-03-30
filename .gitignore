@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+node_modules/
+.claude/
+CLAUDE.md
+config.local.js
